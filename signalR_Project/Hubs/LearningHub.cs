@@ -7,7 +7,7 @@ namespace signalR_Project.Hubs
     {
         public async Task BroadcastMessage (string message)
         {
-            await Clients.All.ReceiveMessage (message);
+            await Clients.All.ReceiveMessage ("message via signalr server : "+message);
         }
 
         public override async Task OnConnectedAsync()
