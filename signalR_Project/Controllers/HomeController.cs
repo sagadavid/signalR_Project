@@ -18,6 +18,11 @@ namespace signalR_Project.Controllers
             return View();
         }
 
+        public IActionResult WebAssemblyClient()
+        {
+            return View();
+
+        }
         public IActionResult Privacy()
         {
             return View();

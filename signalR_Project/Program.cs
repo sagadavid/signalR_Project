@@ -1,4 +1,8 @@
 using signalR_Project.Hubs;
+using Microsoft.AspNetCore.Components.WebAssembly;
+using Microsoft.AspNetCore.Builder;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,5 +32,7 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapHub<LearningHub>("/learningHub");
+
+app.UseBlazorFrameworkFiles();
 
 app.Run();
