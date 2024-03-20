@@ -19,5 +19,10 @@ namespace signalR_Project.Hubs
         {
             await base.OnDisconnectedAsync(exception);
         }
+
+        public async Task SendToOthers(string message)
+        {
+            await Clients.Others.ReceiveMessage (message);
+        }
     }
 }
