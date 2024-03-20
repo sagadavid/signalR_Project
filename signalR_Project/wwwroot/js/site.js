@@ -22,6 +22,12 @@ $('#btn-self-message').click(function () {
     connection.invoke("SendToCaller", message).catch(err => console.error(err.toString));
 });
 
+$('#btn-individual-message').click(function () {
+    var message = $('#individual-message').val();
+    var connectionId = $('#connectionid-individual').val();
+    connection.invoke("SendToOneClient", connectionId, message).catch(err => console.error(err.toString));
+});
+
 async function start() {
     try {
         await connection.start();
