@@ -14,13 +14,15 @@ hubConnection.On<string>("ReceiveMessage",
 try
 {
     await hubConnection.StartAsync();
+    var running = true;
 
-    while (true)
+    while (running)
     {
         var message = string.Empty;
 
         Console.WriteLine("Please specify the action:");
         Console.WriteLine("0 - broadcast to all");
+        Console.WriteLine("1 - send message to other clients");
         Console.WriteLine("exit - Exit the program");
 
         var action = Console.ReadLine();
@@ -28,10 +30,23 @@ try
         Console.WriteLine("Please specify the message:");
         message = Console.ReadLine();
 
-        if (action == "exit")
-            break;
+        switch (action)
+        {
+            case "0":
+                await hubConnection.SendAsync("BroadcastMessage", message);
+                break;
+            case "1":
+                await hubConnection.SendAsync("SendToOthers", message);
+                break;
+            case "exit":
+                running=false;
+                break;
+            default:
+                Console.WriteLine("choose 0 or 1 or exit");
+                break;
+        }
 
-        await hubConnection.SendAsync("BroadcastMessage", message);
+        
     }
 }
 catch (Exception ex)
