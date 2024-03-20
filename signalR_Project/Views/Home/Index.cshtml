@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Home Page for inbrowser Javascript client for signalR";
+    ViewData["Title"] = "inbrowser Javascript client for signalR";
 }
 
 <div class="row" style="padding-top: 50px;">
@@ -9,19 +9,27 @@
                 <label for="broadcast">Message</label>
                 <input type="text" id="broadcast" name="broadcast" />
             </div>
-            <button id="btn-broadcast">Broadcast</button>
+            <button id="btn-broadcast">Broadcast to All</button>
+        </div>
+        <div class="control-group">
+            <div>
+                <label for="others-message">Message</label>
+                <input type="text" id="others-message" name="others-message" />
+            </div>
+            <button id="btn-others-message">Broadcast to Others</button>
+        </div>
+        <div class="control-group">
+            <div>
+                <label for="self-message">Message</label>
+                <input type="text" id="self-message" name="self-message"/>
+            </div>
+            <button id="btn-self-message">Broadcast to Self</button>
         </div>
     </div>
-
+    
     <div class="col-md-7">
         <p>SignalR Messages:</p>
         <pre id="signalr-message-panel"></pre>
     </div>
-    <div class="control-group">
-        <div>
-            <label for="others-message">Message</label>
-            <input type="text" id="others-message" name="others-message"/>
-        </div>
-        <button id="btn-others-message">Send to Others</button>
-    </div>
+    
 </div>

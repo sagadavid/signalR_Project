@@ -24,5 +24,10 @@ namespace signalR_Project.Hubs
         {
             await Clients.Others.ReceiveMessage (message);
         }
+
+        public async Task SendToCaller(string message)
+        {
+            await Clients.Caller.ReceiveMessage (message);
+        }
     }
 }

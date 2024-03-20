@@ -23,6 +23,7 @@ try
         Console.WriteLine("Please specify the action:");
         Console.WriteLine("0 - broadcast to all");
         Console.WriteLine("1 - send message to other clients");
+        Console.WriteLine("2 - send message to self");
         Console.WriteLine("exit - Exit the program");
 
         var action = Console.ReadLine();
@@ -38,11 +39,14 @@ try
             case "1":
                 await hubConnection.SendAsync("SendToOthers", message);
                 break;
+            case "2":
+                await hubConnection.SendAsync("SendToCaller", message);
+                break;
             case "exit":
                 running=false;
                 break;
             default:
-                Console.WriteLine("choose 0 or 1 or exit");
+                Console.WriteLine("choose 0, 1, 2 or exit");
                 break;
         }
 
