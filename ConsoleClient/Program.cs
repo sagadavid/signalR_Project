@@ -41,3 +41,5 @@ catch (Exception ex)
     Console.ReadKey();
     return;
 }
+
+//url when asked : https://localhost:7180/learninghub
