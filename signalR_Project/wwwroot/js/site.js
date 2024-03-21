@@ -44,6 +44,25 @@ $('#btn-group-remove').click(function () {
     connection.invoke("RemoveFromGroup", group).catch(err => console.error(err.toString()));
 });
 
+$('#btn-broadcast').click(function () {
+    var message = $('#broadcast').val();
+
+    if (message.includes(';')) {
+        var messages = message.split(';');
+
+        var subject = new signalR.Subject();
+        connection.send("BroadcastStream", subject).catch(err => console.error(err.toString()));
+        for (var i = 0; i < messages.length; i++) {
+            subject.next(messages[i]);
+        }
+
+        subject.complete();
+
+    } else {
+        connection.invoke("BroadcastMessage", message).catch(err => console.error(err.toString()));
+    }
+});
+
 async function start() {
     try {
         await connection.start();
