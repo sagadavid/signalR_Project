@@ -28,6 +28,22 @@ $('#btn-individual-message').click(function () {
     connection.invoke("SendToOneClient", connectionId, message).catch(err => console.error(err.toString));
 });
 
+$('#btn-group-message').click(function () {
+    var message = $('#group-message').val();
+    var group = $('#group-for-message').val();
+    connection.invoke("SendToGroup", group, message).catch(err => console.error(err.toString()));
+});
+
+$('#btn-group-add').click(function () {
+    var group = $('#group-to-add').val();
+    connection.invoke("AddToGroup", group).catch(err => console.error(err.toString()));
+});
+
+$('#btn-group-remove').click(function () {
+    var group = $('#group-to-remove').val();
+    connection.invoke("RemoveFromGroup", group).catch(err => console.error(err.toString()));
+});
+
 async function start() {
     try {
         await connection.start();
