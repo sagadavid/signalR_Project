@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
+using System.Threading.Channels;
 
 Console.WriteLine("Please specify the URL of SignalR Hub");
 
@@ -49,7 +50,22 @@ try
         switch (action)
         {
             case "0":
-                await hubConnection.SendAsync("BroadcastMessage", message);
+                if (message?.Contains(';') ?? false)
+                {
+                    var channel = Channel.CreateBounded<string>(10);
+                    await hubConnection.SendAsync("BroadcastStream", channel.Reader);
+
+                    foreach (var item in message.Split(';'))
+                    {
+                        await channel.Writer.WriteAsync(item);
+                    }
+
+                    channel.Writer.Complete();
+                }
+                else
+                {
+                    hubConnection.SendAsync("BroadcastMessage", message).Wait();
+                }
                 break;
             case "1":
                 await hubConnection.SendAsync("SendToOthers", message);
