@@ -14,11 +14,13 @@ namespace signalR_Project.Hubs
 
         public override async Task OnConnectedAsync()
         {
+            await Groups.AddToGroupAsync(Context.ConnectionId, "HubUsers");
             await base.OnConnectedAsync();
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, "HubUsers");
             await base.OnDisconnectedAsync(exception);
         }
 
