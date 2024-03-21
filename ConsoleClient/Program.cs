@@ -75,7 +75,7 @@ try
                 break;
             case "3":
                 Console.WriteLine("please spesify the client's connection id:");
-                var connectionId= Console.ReadLine();
+                var connectionId = Console.ReadLine();
                 await hubConnection.SendAsync("SendToOneClient", connectionId, message);
                 break;
             case "4":
@@ -87,15 +87,27 @@ try
             case "6":
                 hubConnection.SendAsync("RemoveFromGroup", groupName).Wait();
                 break;
+            case "7":
+                Console.WriteLine("Please specify the number of jobs to execute.");
+                var numberOfJobs = int.Parse(Console.ReadLine() ?? "0");
+                var cancellationTokenSource = new CancellationTokenSource();
+                var stream = hubConnection.StreamAsync<string>(
+                    "TriggerStream", numberOfJobs, cancellationTokenSource.Token);
+
+                await foreach (var reply in stream)
+                {
+                    Console.WriteLine(reply);
+                }
+                break;
             case "exit":
-                running=false;
+                running = false;
                 break;
             default:
                 Console.WriteLine("choose 0, 1, 2, 3 or exit");
                 break;
         }
 
-        
+
     }
 }
 catch (Exception ex)
