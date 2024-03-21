@@ -63,6 +63,15 @@ $('#btn-broadcast').click(function () {
     }
 });
 
+$('#btn-trigger-stream').click(function () {
+    var numberOfJobs = parseInt($('#number-of-jobs').val(), 10);
+
+    connection.stream("TriggerStream", numberOfJobs)
+        .subscribe({
+            next: (message) => $('#signalr-message-panel').prepend($('<div />').text(message))
+        });
+});
+
 async function start() {
     try {
         await connection.start();
