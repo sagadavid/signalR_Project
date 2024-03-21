@@ -72,6 +72,21 @@ namespace signalR_Project.Hubs
             }
         }
 
+        //IAsyncEnumerable fulfills the stream work already
+        public async IAsyncEnumerable<string> TriggerStream(
+            int jobsCount,
+            [EnumeratorCancellation]
+            CancellationToken cancellationToken)
+        {
+            for (var i = 0; i < jobsCount; i++)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                yield return $"Job {i} executed succesfully";
+                await Task.Delay(1000, cancellationToken);
+            }
+        }
+
+
 
 
     }
