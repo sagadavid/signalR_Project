@@ -30,6 +30,7 @@ try
         Console.WriteLine("4 - send to a group");
         Console.WriteLine("5 - add user to a group");
         Console.WriteLine("6 - remove user from a group");
+        Console.WriteLine("7 - trigger a server stream");
         Console.WriteLine("exit - Exit the program");
 
         var action = Console.ReadLine();
