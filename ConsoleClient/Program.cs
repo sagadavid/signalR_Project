@@ -19,18 +19,32 @@ try
     while (running)
     {
         var message = string.Empty;
+        var groupName = string.Empty;
 
         Console.WriteLine("Please specify the action:");
         Console.WriteLine("0 - broadcast to all");
         Console.WriteLine("1 - send message to other clients");
         Console.WriteLine("2 - send message to self");
         Console.WriteLine("3 - send message to one client");
+        Console.WriteLine("4 - send to a group");
+        Console.WriteLine("5 - add user to a group");
+        Console.WriteLine("6 - remove user from a group");
         Console.WriteLine("exit - Exit the program");
 
         var action = Console.ReadLine();
 
-        Console.WriteLine("Please specify the message:");
-        message = Console.ReadLine();
+        if (action != "5" && action != "6")
+        {
+            Console.WriteLine("Please specify the message:");
+            message = Console.ReadLine();
+        }
+
+        if (action == "4" || action == "5" || action == "6")
+        {
+            Console.WriteLine("Please specify the group name:");
+            groupName = Console.ReadLine();
+        }
+
 
         switch (action)
         {
@@ -47,6 +61,15 @@ try
                 Console.WriteLine("please spesify the client's connection id:");
                 var connectionId= Console.ReadLine();
                 await hubConnection.SendAsync("SendToOneClient", connectionId, message);
+                break;
+            case "4":
+                hubConnection.SendAsync("SendToGroup", groupName, message).Wait();
+                break;
+            case "5":
+                hubConnection.SendAsync("AddToGroup", groupName).Wait();
+                break;
+            case "6":
+                hubConnection.SendAsync("RemoveFromGroup", groupName).Wait();
                 break;
             case "exit":
                 running=false;
