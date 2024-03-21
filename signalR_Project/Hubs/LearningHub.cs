@@ -64,6 +64,14 @@ namespace signalR_Project.Hubs
             await Clients.Others.ReceiveMessage($"user: {Context.ConnectionId}, removed from group:{groupName}");
         }
 
+        public async Task BroadcastStream(IAsyncEnumerable<string> stream)
+        {
+            await foreach (var item in stream)
+            {
+                await Clients.Caller.ReceiveMessage($"Server received {item}");
+            }
+        }
+
 
 
     }
