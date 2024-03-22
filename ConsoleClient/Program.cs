@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Logging;
 using System.Threading.Channels;
 
+
 Console.WriteLine("Please specify the URL of SignalR Hub");
 
 var url = Console.ReadLine();

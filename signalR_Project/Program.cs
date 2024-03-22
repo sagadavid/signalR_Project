@@ -1,6 +1,7 @@
 using signalR_Project.Hubs;
 using Microsoft.AspNetCore.Http.Connections;
 using System.Text.Json.Serialization;
+using MessagePack;
 
 
 
@@ -41,6 +42,16 @@ builder.Services.AddSignalR(hubOptions => {
     options.PayloadSerializerOptions.WriteIndented = true;
 
     Console.WriteLine($"Number of default JSON converters: {options.PayloadSerializerOptions.Converters.Count}");
+})
+//message pack communicates in binary.. so faster but non_humanreadable
+.AddMessagePackProtocol(options =>
+{
+    options.SerializerOptions = MessagePackSerializerOptions.Standard
+        .WithSecurity(MessagePackSecurity.UntrustedData)
+        .WithCompression(MessagePackCompression.Lz4Block)
+        .WithAllowAssemblyVersionMismatch(true)
+        .WithOldSpec()
+        .WithOmitAssemblyVersion(true);
 });
 
 var app = builder.Build();
