@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
+﻿using Microsoft.AspNetCore.Connections;
+using Microsoft.AspNetCore.Http.Connections;
+using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Logging;
 using System.Threading.Channels;
 
 Console.WriteLine("Please specify the URL of SignalR Hub");
@@ -6,8 +9,34 @@ Console.WriteLine("Please specify the URL of SignalR Hub");
 var url = Console.ReadLine();
 
 var hubConnection = new HubConnectionBuilder()
-                         .WithUrl(url)
+                         .WithUrl(url,
+                            HttpTransportType.WebSockets,
+                            options => {
+                                options.AccessTokenProvider = null;
+                                options.HttpMessageHandlerFactory = null;
+                                options.Headers["CustomData"] = "value";
+                                options.SkipNegotiation = true;
+                                options.ApplicationMaxBufferSize = 1_000_000;
+                                options.ClientCertificates = new System.Security.Cryptography.X509Certificates.X509CertificateCollection();
+                                options.CloseTimeout = TimeSpan.FromSeconds(5);
+                                options.Cookies = new System.Net.CookieContainer();
+                                options.DefaultTransferFormat = TransferFormat.Text;
+                                options.Credentials = null;
+                                options.Proxy = null;
+                                options.UseDefaultCredentials = true;
+                                options.TransportMaxBufferSize = 1_000_000;
+                                options.WebSocketConfiguration = null;
+                                options.WebSocketFactory = null;
+                            })
+                         .ConfigureLogging(logging => {
+                             logging.SetMinimumLevel(LogLevel.Information);
+                             logging.AddConsole();
+                         })
                          .Build();
+
+hubConnection.HandshakeTimeout = TimeSpan.FromSeconds(15);
+hubConnection.ServerTimeout = TimeSpan.FromSeconds(30);
+hubConnection.KeepAliveInterval = TimeSpan.FromSeconds(10);
 
 hubConnection.On<string>("ReceiveMessage",
     message => Console.WriteLine($"SignalR Hub Message: {message}"));
