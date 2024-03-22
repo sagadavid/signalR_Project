@@ -3,6 +3,10 @@ using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Logging;
 using System.Threading.Channels;
+using MessagePack;
+using Microsoft.Extensions.DependencyInjection;
+
+
 
 
 Console.WriteLine("Please specify the URL of SignalR Hub");
@@ -30,9 +34,18 @@ var hubConnection = new HubConnectionBuilder()
                                 options.WebSocketFactory = null;
                             })
                          .ConfigureLogging(logging => {
-                             logging.SetMinimumLevel(LogLevel.Information);
-                             logging.AddConsole();
+                            logging.SetMinimumLevel(LogLevel.Information);
+                            logging.AddConsole();
                          })
+                          .AddMessagePackProtocol(options =>//this protocol is high sensetive, doent translate like json
+                          {
+                              options.SerializerOptions = MessagePackSerializerOptions.Standard
+                                 .WithSecurity(MessagePackSecurity.UntrustedData)
+                                 .WithCompression(MessagePackCompression.Lz4Block)
+                                 .WithAllowAssemblyVersionMismatch(true)
+                                 .WithOldSpec()
+                                 .WithOmitAssemblyVersion(true);
+                          })
                          .Build();
 
 hubConnection.HandshakeTimeout = TimeSpan.FromSeconds(15);
