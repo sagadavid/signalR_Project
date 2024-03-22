@@ -8,6 +8,7 @@
         withCredentials: true,
         timeout: 100000
     })
+    .withHubProtocol(new signalR.protocols.msgpack.MessagePackHubProtocol())//js client is now using messagepack instead of json
     .configureLogging(signalR.LogLevel.Information)
     .build();
 
