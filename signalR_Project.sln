@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleClient", "ConsoleCli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client-WebSocket", "Client-WebSocket\Client-WebSocket.csproj", "{CE7C298A-88FB-4EE6-A381-5DF6B235F4B1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthProvider", "AuthProvider\AuthProvider.csproj", "{052D2415-05EE-4E39-8651-6C20607CB080}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{CE7C298A-88FB-4EE6-A381-5DF6B235F4B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE7C298A-88FB-4EE6-A381-5DF6B235F4B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE7C298A-88FB-4EE6-A381-5DF6B235F4B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{052D2415-05EE-4E39-8651-6C20607CB080}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{052D2415-05EE-4E39-8651-6C20607CB080}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{052D2415-05EE-4E39-8651-6C20607CB080}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{052D2415-05EE-4E39-8651-6C20607CB080}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
