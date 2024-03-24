@@ -1,0 +1,1 @@
+﻿dotnet new -i IdentityServer4 dotnet new is4admin -o AuthProvider dotnet sln add AuthProvider\AuthProvider.csprojdotnet runhttps://localhost:5001/Username	Full Name	Email Address	Status	ActionsDAS	David Saga	davidsagaepost@gmail.com		admino	admino admino	admio@gmail.com		info@rocksolidknowledge.com	Bootstrap User	info@rocksolidknowledge.com		
