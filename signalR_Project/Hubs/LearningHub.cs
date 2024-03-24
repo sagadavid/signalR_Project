@@ -1,12 +1,19 @@
 ﻿using BlazorClient.Pages;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using signalR_Project.Interfaces;
 using System.Runtime.CompilerServices;
 
 namespace signalR_Project.Hubs
 {
+    //two auth schemes we use, are added
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme + "," +
+        CookieAuthenticationDefaults.AuthenticationScheme, Policy = "BasicAuth")]
     public class LearningHub : Hub<ILearningHubClient>
     {
+        [AllowAnonymous]
         public async Task BroadcastMessage (string message)
         {
             await Clients.All.ReceiveMessage(GetConnIdSinMessage(message));

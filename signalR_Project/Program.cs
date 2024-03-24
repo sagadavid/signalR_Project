@@ -2,6 +2,10 @@ using signalR_Project.Hubs;
 using Microsoft.AspNetCore.Http.Connections;
 using System.Text.Json.Serialization;
 using MessagePack;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 
 
 
@@ -21,6 +25,59 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader()
             .AllowCredentials());
 });
+
+JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = "oidc";
+})
+.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+.AddOpenIdConnect("oidc", options =>
+{
+    options.Authority = "https://localhost:5001";
+    options.ClientId = "webAppClient";
+    options.ClientSecret = "webAppClientSecret";
+    options.ResponseType = "code";
+    options.CallbackPath = "/signin-oidc";
+    options.SaveTokens = true;
+    options.RequireHttpsMetadata = false;
+})
+.AddJwtBearer(options =>
+{
+    options.Authority = "https://localhost:5001";
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateAudience = false
+    };
+    options.RequireHttpsMetadata = false;
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var path = context.HttpContext.Request.Path;
+            if (path.StartsWithSegments("/learningHub"))
+            {
+                // Attempt to get a token from a query sting used by WebSocket
+                var accessToken = context.Request.Query["access_token"];
+
+                // If not present, extract the token from Authorization header
+                if (string.IsNullOrWhiteSpace(accessToken))
+                {
+                    accessToken = context.Request.Headers["Authorization"]
+                        .ToString()
+                        .Replace("Bearer ", "");
+                }
+
+                context.Token = accessToken;
+            }
+
+            return Task.CompletedTask;
+        }
+    };
+});
+
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR(hubOptions => {
@@ -86,6 +143,7 @@ app.UseRouting();
 app.UseCors("AllowAnyGet")
    .UseCors("AllowExampleDomain");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
