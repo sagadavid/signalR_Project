@@ -2,7 +2,7 @@
     .withUrl("/learningHub", {
         transport: signalR.HttpTransportType.WebSockets | signalR.HttpTransportType.LongPolling,
         headers: { "Key": "value" },
-        accessTokenFactory: null,
+        accessTokenFactory: null,//bcause cookie is used no need for extra authentication for js client unless on moblie--> accessTokenFactory: () => myToken
         logMessageContent: true,
         skipNegotiation: false,
         withCredentials: true,
