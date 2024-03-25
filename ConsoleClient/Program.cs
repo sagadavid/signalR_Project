@@ -13,25 +13,13 @@ Console.WriteLine("Please specify the URL of SignalR Hub");
 
 var url = Console.ReadLine();
 
+Console.WriteLine("Please specify the access token");
+var token = Console.ReadLine();
+
 var hubConnection = new HubConnectionBuilder()
                          .WithUrl(url,
-                            HttpTransportType.WebSockets,
                             options => {
-                                options.AccessTokenProvider = null;
-                                options.HttpMessageHandlerFactory = null;
-                                options.Headers["CustomData"] = "value";
-                                options.SkipNegotiation = true;
-                                options.ApplicationMaxBufferSize = 1_000_000;
-                                options.ClientCertificates = new System.Security.Cryptography.X509Certificates.X509CertificateCollection();
-                                options.CloseTimeout = TimeSpan.FromSeconds(5);
-                                options.Cookies = new System.Net.CookieContainer();
-                                options.DefaultTransferFormat = TransferFormat.Text;
-                                options.Credentials = null;
-                                options.Proxy = null;
-                                options.UseDefaultCredentials = true;
-                                options.TransportMaxBufferSize = 1_000_000;
-                                options.WebSocketConfiguration = null;
-                                options.WebSocketFactory = null;
+                                options.AccessTokenProvider = () => Task.FromResult(token);
                             })
                          .ConfigureLogging(logging => {
                             logging.SetMinimumLevel(LogLevel.Information);
