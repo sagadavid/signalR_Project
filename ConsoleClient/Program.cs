@@ -35,7 +35,7 @@ var hubConnection = new HubConnectionBuilder()
                             })
                          .ConfigureLogging(logging => {
                             logging.SetMinimumLevel(LogLevel.Information);
-                            logging.AddConsole();
+                           // logging.AddConsole();
                          })
                           .AddMessagePackProtocol(options =>//this protocol is high sensetive, doent translate like json
                           {
