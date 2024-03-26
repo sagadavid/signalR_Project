@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 namespace signalR_Project.Hubs
 {
     //two auth schemes we use, are added
+    //allready authorized for basic auth
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme + "," +
         CookieAuthenticationDefaults.AuthenticationScheme, Policy = "BasicAuth")]
     public class LearningHub : Hub<ILearningHubClient>
@@ -52,11 +53,13 @@ namespace signalR_Project.Hubs
             await Clients.Client(connectionId).ReceiveMessage(GetConnIdSinMessage(message));
         }
 
+        [Authorize(Roles = "user")]
         public async Task SendToGroup(string groupName, string message)
         {
             await Clients.Group(groupName).ReceiveMessage(GetConnIdSinMessage(message));
         }
 
+        [Authorize("AdminOnly")]
         public async Task AddToGroup(string groupName)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);//context has already connectionId
