@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using SignalRServer;
 
 
 
@@ -76,6 +77,24 @@ builder.Services.AddAuthentication(options =>
             return Task.CompletedTask;
         }
     };
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("BasicAuth", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+    });
+
+    options.AddPolicy("AdminClaim", policy =>
+    {
+        policy.RequireClaim("admin");
+    });
+
+    options.AddPolicy("AdminOnly", policy =>
+    {
+        policy.Requirements.Add(new RoleRequirement("admin"));
+    });
 });
 
 
