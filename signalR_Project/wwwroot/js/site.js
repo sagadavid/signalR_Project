@@ -6,8 +6,10 @@
         logMessageContent: true,
         skipNegotiation: false,
         withCredentials: true,
-        timeout: 100000
+        timeout: 100000,
+        accessTokenFactory:()=>myToken
     })
+    
     .withHubProtocol(new signalR.protocols.msgpack.MessagePackHubProtocol())//js client is now using messagepack instead of json
     .configureLogging(signalR.LogLevel.Information)
     .build();

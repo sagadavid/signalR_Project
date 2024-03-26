@@ -20,7 +20,7 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader());
 
     options.AddPolicy("AllowExampleDomain",
-        builder => builder.WithOrigins("https://example.com")
+        builder => builder.WithOrigins("https://localhost:7180")
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials());
