@@ -30,7 +30,8 @@ var hubConnection = new HubConnectionBuilder()
                             })
                          .ConfigureLogging(logging => {
                              logging.SetMinimumLevel(LogLevel.Information);
-                             logging.AddConsole();
+                             //logging.AddConsole();
+                             Console.WriteLine(logging);
                          })
                          .Build();
 
