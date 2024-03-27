@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using SignalRServer;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 
 
@@ -32,7 +34,8 @@ JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = "oidc";
+    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+    //options.DefaultChallengeScheme = "oidc";
 })
 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
 .AddOpenIdConnect("oidc", options =>
@@ -40,7 +43,10 @@ builder.Services.AddAuthentication(options =>
     options.Authority = "https://localhost:5001";
     options.ClientId = "webAppClient";
     options.ClientSecret = "webAppClientSecret";
-    options.ResponseType = "code";
+    //options.ResponseType = "code";
+    options.ResponseType = OpenIdConnectResponseType.Code;
+    options.Scope.Add("openid");
+    options.Scope.Add("profile");
     options.CallbackPath = "/signin-oidc";
     options.SaveTokens = true;
     options.RequireHttpsMetadata = false;
